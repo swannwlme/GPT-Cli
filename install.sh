@@ -21,12 +21,20 @@ fi
 #install the required python packages
 pip install -r requirements.txt
 
+echo "Do you also want to be able to use gpt <prompt> with gptc <prompt> ? (y/n)"
+read answer
+
 #add the gpt_cli command to the PATH
 echo '#!/bin/bash
 python ~/gpt_cli/gpt_cli.py "$@"' > gptc
 
 mv gptc /usr/local/bin/gptc
 chmod +x /usr/local/bin/gptc
+
+if [[ "$answer" == "y" || "$answer" == "Y" ]];then
+  cp /usr/local/bin/gptc /usr/local/bin/gpt
+  chmod +x /usr/local/bin/gpt
+fi
 
 mkdir ~/gpt_cli
 cp gpt_cli.py ~/gpt_cli
