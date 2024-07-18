@@ -38,8 +38,23 @@ while not valid_key:
         with open('gpt_cli.json', 'w') as f:
             json.dump({"api_key": api}, f)
 
+
+code = True
+gpt4o = False
+img = False
+prev = False
+audio = False
+voice = "onyx"
+give_current_files=False
+give_files = False
+max_depth = 3
+
 def get_gpt_response(prompt, model):
     prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
+    if give_current_files:
+        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
+    elif give_files :
+        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
@@ -48,6 +63,10 @@ def get_gpt_response(prompt, model):
     return response.choices[0].message.content
 
 def gpt_no_code_response(prompt, model):
+    if give_current_files:
+        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
+    elif give_files :
+        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
@@ -56,8 +75,12 @@ def gpt_no_code_response(prompt, model):
     print(response.choices[0].message.content)
     print(" ")
 
-def generate_image(prompt, noprev):
+def generate_image(prompt, prev):
     print("Generating image...")
+    if give_current_files:
+        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
+    elif give_files :
+        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
     response = client.images.generate(
         model="dall-e-3",
         prompt=prompt,
@@ -65,7 +88,7 @@ def generate_image(prompt, noprev):
         quality="standard",
         n=1,
     )
-    if not noprev:
+    if not prev:
         webbrowser.open(response.data[0].url)
     image_url = response.data[0].url
     img_data = requests.get(image_url).content
@@ -88,11 +111,18 @@ def get_help():
     print("-prev : Do not display the preview of the image => needs to be used after -img or --image")
     print("-a, --audio : Generate audio based on the prompt")
     print("-v, --voice : Specify the voice for the audio (f or m) => needs to be used after -a or --audio")
+    print("-f : Specify to Chat-GPT the files and folders in your current working directory")
+    print("-fR : Specify to Chat-GPT the files and folders and sub-files/folders from your current working directory")
+    print("-L <value> : Specify the depth of the -fR command (default = 3) => to use after -fR")
     print("--change-key : Change the OpenAI API key")
     print("\n")
 
 def generate_audio(prompt, voice):
     print("Generating audio...")
+    if give_current_files:
+        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
+    elif give_files :
+        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
     response = client.audio.speech.create(
         model="tts-1",
         voice=voice,
@@ -105,23 +135,15 @@ def generate_audio(prompt, voice):
     response.write_to_file(filename)
     
     print(f"Audio saved as {filename}")
-    
 
 
 
-arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version"]
+arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version", "-f", "-fR", "-L"]
 
 if len(sys.argv) < 2:
     print("Usage: gptc [options] <prompt>")
     print("Use -h or --help for more options\n")
     sys.exit(1)
-
-code = True
-gpt4o = False
-img = False
-noprev = False
-audio = False
-voice = "onyx"
 
 if sys.argv[1] in ["-h", "--help"]:
     get_help()
@@ -140,7 +162,7 @@ for arg in sys.argv[1:]:
             code=False
             img = True
             if sys.argv[sys.argv.index(arg)+1] in ["-prev"]:
-                noprev = True
+                prev = True
                 sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
             sys.argv.remove(arg)
             break
@@ -168,6 +190,17 @@ for arg in sys.argv[1:]:
         elif arg in ["-v", "--version"]:
             print(f"\nCurrent gpt_cli version : {version}\n")
             exit(0)
+        elif arg in ["-f"]:
+            give_current_files = True
+            give_files = False
+            sys.argv.remove(arg)
+        elif arg in ["-fR"]:
+            give_files = True
+            sys.argv.remove(arg)
+        elif arg in ["-L"]:
+            max_depth = int(sys.argv[sys.argv.index(arg)+1])
+            sys.argv.remove(arg)
+            sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
         else :
             sys.argv.remove(arg)
     else:
@@ -181,7 +214,7 @@ else:
 
 if img:
     prompt = " ".join(sys.argv[1:])
-    generate_image(prompt, not noprev)
+    generate_image(prompt, prev)
 elif audio:
     prompt = " ".join(sys.argv[1:])
     generate_audio(prompt, voice)
