@@ -85,7 +85,7 @@ def get_help():
     print("-nc, --no-code, --nocode : Generate a response without code")
     print("-4o, --4o : Use GPT-4.0 model")
     print("-img, --image, -i : Generate an image based on the prompt")
-    print("-noprev : Do not display the preview of the image => needs to be used after -img or --image")
+    print("-prev : Do not display the preview of the image => needs to be used after -img or --image")
     print("-a, --audio : Generate audio based on the prompt")
     print("-v, --voice : Specify the voice for the audio (f or m) => needs to be used after -a or --audio")
     print("--change-key : Change the OpenAI API key")
@@ -109,7 +109,7 @@ def generate_audio(prompt, voice):
 
 
 
-arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-noprev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version"]
+arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version"]
 
 if len(sys.argv) < 2:
     print("Usage: gptc [options] <prompt>")
@@ -139,7 +139,7 @@ for arg in sys.argv[1:]:
             gpt4o = False
             code=False
             img = True
-            if sys.argv[sys.argv.index(arg)+1] in ["-noprev"]:
+            if sys.argv[sys.argv.index(arg)+1] in ["-prev"]:
                 noprev = True
                 sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
             sys.argv.remove(arg)
@@ -181,7 +181,7 @@ else:
 
 if img:
     prompt = " ".join(sys.argv[1:])
-    generate_image(prompt, noprev)
+    generate_image(prompt, not noprev)
 elif audio:
     prompt = " ".join(sys.argv[1:])
     generate_audio(prompt, voice)
