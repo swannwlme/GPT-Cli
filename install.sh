@@ -25,7 +25,7 @@ pip install -r requirements.txt
 echo '#!/bin/bash
 python ~/gpt_cli/gpt_cli.py "$@"' > gptc
 
-mv gpt /usr/local/bin/gptc
+mv gptc /usr/local/bin/gptc
 chmod +x /usr/local/bin/gptc
 
 mkdir ~/gpt_cli
