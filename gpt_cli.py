@@ -107,7 +107,7 @@ def generate_audio(prompt, voice):
 arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-noprev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version"]
 
 if len(sys.argv) < 2:
-    print("Usage: gpt [options] <prompt>")
+    print("Usage: gptc [options] <prompt>")
     print("Use -h or --help for more options\n")
     sys.exit(1)
 
