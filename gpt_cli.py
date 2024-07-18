@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import platform
 
-version = "1.0.0"
+version = "1.4"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
 
