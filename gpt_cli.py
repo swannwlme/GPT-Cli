@@ -5,10 +5,15 @@ import webbrowser
 import requests
 import json
 from pathlib import Path
+import platform
 
 version = "1.0.0"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
+
+# Check the os
+# Get the name of the operating system
+os_name = platform.system()
 
 if not os.path.exists(config_file):
     print("No OpenAI api key found.")
@@ -34,7 +39,7 @@ while not valid_key:
             json.dump({"api_key": api}, f)
 
 def get_gpt_response(prompt, model):
-    prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line bash command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
+    prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
@@ -182,7 +187,7 @@ elif audio:
     generate_audio(prompt, voice)
 elif code:
     prompt = " ".join(sys.argv[1:])
-    print(get_gpt_response(prompt, model))
+    os.system(get_gpt_response(prompt, model))
 else:
     prompt = " ".join(sys.argv[1:])
     gpt_no_code_response(prompt, model)
