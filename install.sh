@@ -29,7 +29,7 @@ mv gpt /usr/local/bin/gpt
 chmod +x /usr/local/bin/gpt
 
 mkdir ~/gpt_cli
-mv gpt_cli.py ~/gpt_cli
+cp gpt_cli.py ~/gpt_cli
 
 echo " "
 echo "Installation complete have fun :)"
