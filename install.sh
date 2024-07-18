@@ -24,6 +24,21 @@ pip install -r requirements.txt
 echo "Do you also want to be able to use gpt <prompt> with gptc <prompt> ? (y/n)"
 read answer
 
+#remove the gpt_cli.py file if it exists
+if [ -f ~/gpt_cli ]; then
+  rm -R ~/gpt_cli
+fi
+
+#remove the gptc command if it exists
+if [ -f /usr/local/bin/gptc ]; then
+  rm /usr/local/bin/gptc
+fi
+
+#remove the gpt command if it exists
+if [ -f /usr/local/bin/gpt ]; then
+  rm /usr/local/bin/gpt
+fi
+
 #add the gpt_cli command to the PATH
 echo '#!/bin/bash
 python ~/gpt_cli/gpt_cli.py "$@"' > gptc
