@@ -49,12 +49,41 @@ give_current_files=False
 give_files = False
 max_depth = 3
 
-def get_gpt_response(prompt, model):
-    prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
+import os
+
+def list_directory_structure(root_dir, max_depth, current_depth=0, prefix=""):
+    if current_depth > max_depth:
+        return ""
+    
+    output = ""
+    items = os.listdir(root_dir)
+    pointers = ['├── '] * (len(items) - 1) + ['└── ']
+    
+    for pointer, item in zip(pointers, items):
+        path = os.path.join(root_dir, item)
+        if os.path.isdir(path):
+            output += f"{prefix}{pointer}{item}\n"
+            if pointer == '└── ':
+                next_prefix = prefix + '    '
+            else:
+                next_prefix = prefix + '│   '
+            output += list_directory_structure(path, max_depth, current_depth + 1, next_prefix)
+        else:
+            output += f"{prefix}{pointer}{item}\n"
+    
+    return output
+
+def get_files(prompt):
     if give_current_files:
         prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
     elif give_files :
-        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
+        dir_list = list_directory_structure(os.getcwd(), max_depth)
+        prompt += f"\nHere is the list of contents in the current directory : \n{dir_list}"
+    return prompt
+
+def get_gpt_response(prompt, model):
+    prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
+    prompt = get_files(prompt)
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
@@ -63,10 +92,7 @@ def get_gpt_response(prompt, model):
     return response.choices[0].message.content
 
 def gpt_no_code_response(prompt, model):
-    if give_current_files:
-        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
-    elif give_files :
-        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
+    prompt = get_files(prompt)
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
@@ -77,10 +103,7 @@ def gpt_no_code_response(prompt, model):
 
 def generate_image(prompt, prev):
     print("Generating image...")
-    if give_current_files:
-        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
-    elif give_files :
-        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
+    prompt = get_files(prompt)
     response = client.images.generate(
         model="dall-e-3",
         prompt=prompt,
@@ -118,11 +141,7 @@ def get_help():
     print("\n")
 
 def generate_audio(prompt, voice):
-    print("Generating audio...")
-    if give_current_files:
-        prompt += f"\nHere is the list of contents in the current directory : {os.listdir()}"
-    elif give_files :
-        prompt += f"\nHere is the list of contents in the current directory : {os.system(f"tree -L {max_depth}")}"
+    prompt = get_files(prompt)
     response = client.audio.speech.create(
         model="tts-1",
         voice=voice,
