@@ -73,7 +73,7 @@ def generate_image(prompt, noprev):
     print(f"Image saved as {filename}")
 
 def get_help():
-    print("\nUsage: gpt [options] <prompt> => Generates command based on the prompt and executes it")
+    print("\nUsage: gptc [options] <prompt> => Generates command based on the prompt and executes it")
     print("Arguments:")
     print("-h, --help : Display this help message")
     print("-v, --version : Get current version of gpt_cli")

@@ -23,10 +23,10 @@ pip install -r requirements.txt
 
 #add the gpt_cli command to the PATH
 echo '#!/bin/bash
-python ~/gpt_cli/gpt_cli.py "$@"' > gpt
+python ~/gpt_cli/gpt_cli.py "$@"' > gptc
 
-mv gpt /usr/local/bin/gpt
-chmod +x /usr/local/bin/gpt
+mv gpt /usr/local/bin/gptc
+chmod +x /usr/local/bin/gptc
 
 mkdir ~/gpt_cli
 cp gpt_cli.py ~/gpt_cli
