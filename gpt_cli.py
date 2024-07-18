@@ -131,7 +131,7 @@ def get_help():
     print("-nc, --no-code, --nocode : Generate a response without code")
     print("-4o, --4o : Use GPT-4.0 model")
     print("-img, --image, -i : Generate an image based on the prompt")
-    print("-prev : Do not display the preview of the image => needs to be used after -img or --image")
+    print("-prev : Display a preview of the image => needs to be used after -img or --image")
     print("-a, --audio : Generate audio based on the prompt")
     print("-v, --voice : Specify the voice for the audio (f or m) => needs to be used after -a or --audio")
     print("-f : Specify to Chat-GPT the files and folders in your current working directory")
