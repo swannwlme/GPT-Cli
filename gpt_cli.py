@@ -110,7 +110,7 @@ def generate_image(prompt, prev):
         quality="standard",
         n=1,
     )
-    if not prev:
+    if prev:
         webbrowser.open(response.data[0].url)
     image_url = response.data[0].url
     img_data = requests.get(image_url).content
@@ -145,7 +145,6 @@ def generate_audio(prompt, voice):
         model="tts-1",
         voice=voice,
         input=prompt,
-        
     )
     filename = 'generated.mp3'
     while os.path.exists(filename):
