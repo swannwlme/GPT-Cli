@@ -112,6 +112,8 @@ def generate_image(prompt, prev):
     )
     if prev:
         webbrowser.open(response.data[0].url)
+    else :
+        print(f"Image URL : {response.data[0].url}")
     image_url = response.data[0].url
     img_data = requests.get(image_url).content
     filename = 'generated.png'
