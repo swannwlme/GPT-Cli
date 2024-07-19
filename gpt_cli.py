@@ -168,58 +168,70 @@ if sys.argv[1] in ["-h", "--help"]:
 
 for arg in sys.argv[1:]:
     if arg in arguments:
-        if arg in ["-nc", "--no-code", "--nocode"]:
-            code = False
-            sys.argv.remove(arg)
-        elif arg in ["-4o", "--4o"]:
-            gpt4o = True
-            sys.argv.remove(arg)
-        elif arg in ["-img", "--image", "-i"]:
-            gpt4o = False
-            code=False
-            img = True
-            if sys.argv[sys.argv.index(arg)+1] in ["-prev"]:
-                prev = True
-                sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
-            sys.argv.remove(arg)
-            break
-        elif arg in ["-audio", "-a"]:
-            gpt4o = False
-            code=False
-            img = False
-            audio = True
-            if sys.argv[sys.argv.index(arg)+1] in ["-v", "--voice"]:
-                voice = sys.argv[sys.argv.index(arg)+2]
-                if voice == "female" or "f":
-                    voice = "nova"
-                else:
-                    voice = "onyx"
-                sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
-                sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
-            sys.argv.remove(arg)
-            break
-        elif arg in ["--change-key"]:
-            print("Please enter your OpenAI api key : ")
-            api = input()
-            with open('gpt_cli.json', 'w') as f:
-                json.dump({"api_key": api}, f)
-            sys.exit(0)
-        elif arg in ["-v", "--version"]:
-            print(f"\nCurrent gpt_cli version : {version}\n")
-            exit(0)
-        elif arg in ["-f"]:
-            give_current_files = True
-            give_files = False
-            sys.argv.remove(arg)
-        elif arg in ["-fR"]:
-            give_files = True
-            sys.argv.remove(arg)
-        elif arg in ["-L"]:
-            max_depth = int(sys.argv[sys.argv.index(arg)+1])
-            sys.argv.remove(arg)
-            sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
-        else :
-            sys.argv.remove(arg)
+        match arg:
+            case "-nc" | "--no-code" | "--nocode":
+                code = False
+                sys.argv.remove(arg)
+
+            case "-4o" | "--4o":
+                gpt4o = True
+                sys.argv.remove(arg)
+
+            case "-img" | "--image" | "-i":
+                gpt4o = False
+                code = False
+                img = True
+                next_arg = sys.argv[sys.argv.index(arg) + 1]
+                if next_arg == "-prev":
+                    prev = True
+                    sys.argv.remove(next_arg)
+                sys.argv.remove(arg)
+                break
+
+            case "-audio" | "-a":
+                gpt4o = False
+                code = False
+                img = False
+                audio = True
+                next_arg = sys.argv[sys.argv.index(arg) + 1]
+                if next_arg in ["-v", "--voice"]:
+                    voice = sys.argv[sys.argv.index(arg) + 2]
+                    if voice in ["female", "f"]:
+                        voice = "nova"
+                    else:
+                        voice = "onyx"
+                    sys.argv.remove(next_arg)
+                    sys.argv.remove(voice)
+                sys.argv.remove(arg)
+                break
+
+            case "--change-key":
+                print("Please enter your OpenAI api key: ")
+                api = input()
+                with open('gpt_cli.json', 'w') as f:
+                    json.dump({"api_key": api}, f)
+                sys.exit(0)
+
+            case "-v" | "--version":
+                print(f"\nCurrent gpt_cli version: {version}\n")
+                sys.exit(0)
+
+            case "-f":
+                give_current_files = True
+                give_files = False
+                sys.argv.remove(arg)
+
+            case "-fR":
+                give_files = True
+                sys.argv.remove(arg)
+
+            case "-L":
+                max_depth = int(sys.argv[sys.argv.index(arg) + 1])
+                sys.argv.remove(arg)
+                sys.argv.remove(str(max_depth))
+
+            case _:
+                sys.argv.remove(arg)
     else:
         break
 
