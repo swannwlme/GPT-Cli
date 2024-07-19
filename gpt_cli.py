@@ -136,6 +136,7 @@ def get_help():
     print("-f : Specify to Chat-GPT the files and folders in your current working directory")
     print("-fR : Specify to Chat-GPT the files and folders and sub-files/folders from your current working directory")
     print("-L <value> : Specify the depth of the -fR command (default = 3) => to use after -fR")
+    print("--print-api : Prints your current API Ket")
     print("--change-key : Change the OpenAI API key")
     print("\n")
 
@@ -156,7 +157,7 @@ def generate_audio(prompt, voice):
 
 
 
-arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version", "-f", "-fR", "-L"]
+arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version", "-f", "-fR", "-L", "--print-api"]
 
 if len(sys.argv) < 2:
     print("Usage: gptc [options] <prompt>")
@@ -219,6 +220,9 @@ for arg in sys.argv[1:]:
             max_depth = int(sys.argv[sys.argv.index(arg)+1])
             sys.argv.remove(arg)
             sys.argv.remove(sys.argv[sys.argv.index(arg)+1])
+        elif arg in ["--print-api"]:
+            print(f"API Key : {api}")
+            exit()
         else :
             sys.argv.remove(arg)
     else:
