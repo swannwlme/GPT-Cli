@@ -49,7 +49,6 @@ give_current_files=False
 give_files = False
 max_depth = 3
 
-import os
 
 def list_directory_structure(root_dir, max_depth, current_depth=0, prefix=""):
     if current_depth > max_depth:
@@ -81,7 +80,7 @@ def get_files(prompt):
         prompt += f"\nHere is the list of contents in the current directory : \n{dir_list}"
     return prompt
 
-def get_gpt_response(prompt, model):
+def get_gpt_response(prompt, model, useMessages=False):
     prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
     prompt = get_files(prompt)
     response = client.chat.completions.create(
