@@ -40,7 +40,7 @@ while not valid_key:
 
 
 code = True
-gpt4o = False
+model = "gpt-4o-mini"
 img = False
 prev = False
 audio = False
@@ -131,6 +131,7 @@ def get_help():
     print("-v, --version : Get current version of gpt_cli")
     print("-nc, --no-code, --nocode : Generate a response without code")
     print("-4o, --4o : Use GPT-4.0 model")
+    print("-3, -3.5 : Use GPT-3.5-turbo model (default : GPT-4.0 mini)")
     print("-img, --image, -i : Generate an image based on the prompt")
     print("-prev : Display a preview of the image => needs to be used after -img or --image")
     print("-a, --audio : Generate audio based on the prompt")
@@ -157,7 +158,7 @@ def generate_audio(prompt, voice):
 
 
 
-arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version", "-f", "-fR", "-L"]
+arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-3.5", "-3", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version", "-f", "-fR", "-L"]
 
 if len(sys.argv) < 2:
     print("Usage: gptc [options] <prompt>")
@@ -176,7 +177,11 @@ for arg in sys.argv[1:]:
                 sys.argv.remove(arg)
 
             case "-4o" | "--4o":
-                gpt4o = True
+                model = "gpt-4.0"
+                sys.argv.remove(arg)
+
+            case "-3.5" | "-3":
+                model = "gpt-3.5-turbo"
                 sys.argv.remove(arg)
 
             case "-img" | "--image" | "-i":
@@ -236,12 +241,6 @@ for arg in sys.argv[1:]:
                 sys.argv.remove(arg)
     else:
         break
-
-
-if gpt4o:
-    model = "gpt-4.0"
-else:
-    model = "gpt-3.5-turbo"
 
 if img:
     prompt = " ".join(sys.argv[1:])
