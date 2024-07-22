@@ -1,4 +1,4 @@
-# <p align="center">💻 GPT Cli</p>
+# <p align="center">![Chat GPT Icon](https://cdn-icons-png.flaticon.com/512/11865/11865326.png) GPT Cli</p>
 
 ![Demo image](image.png)
 
