@@ -1,4 +1,4 @@
-# <p align="center"> <img src="https://cdn-icons-png.flaticon.com/512/11865/11865326.png" width=20 height=20 /> GPT Cli</p>
+# <p align="center"> <img src="https://static.vecteezy.com/system/resources/previews/022/841/114/original/chatgpt-logo-transparent-background-free-png.png" width=30 height=30 /> GPT Cli</p>
 
 ![Demo image](image.png)
 
