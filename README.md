@@ -23,6 +23,7 @@ Arguments:
 -v, --version : Get current version of gpt_cli
 -nc, --no-code, --nocode : Generate a response without code
 -4o, --4o : Use GPT-4.0 model
+-min, --mini : Use GPT-4-mini model
 -img, --image, -i : Generate an image based on the prompt
 -prev : Display a preview of the image => needs to be used after -img or --image
 -a, --audio : Generate audio based on the prompt
