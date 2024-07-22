@@ -1,4 +1,4 @@
-# <p style="text-align: center;">💻 GPT Cli</p>
+# <p style="text-align: center;">GPT Cli</p>***
 
 ![Demo image](image.png)
 
