@@ -15,3 +15,20 @@
 * **Transform text to speech** : Easily transform your text to a speech by using command ```gptc -a <prompt>```
 
 To get every possible commands, simply use ```gptc -h```
+
+```
+Usage: gptc [options] <prompt> => Generates command based on the prompt and executes it
+Arguments:
+-h, --help : Display this help message
+-v, --version : Get current version of gpt_cli
+-nc, --no-code, --nocode : Generate a response without code
+-4o, --4o : Use GPT-4.0 model
+-img, --image, -i : Generate an image based on the prompt
+-prev : Display a preview of the image => needs to be used after -img or --image
+-a, --audio : Generate audio based on the prompt
+-v, --voice : Specify the voice for the audio (f or m) => needs to be used after -a or --audio
+-f : Specify to Chat-GPT the files and folders in your current working directory
+-fR : Specify to Chat-GPT the files and folders and sub-files/folders from your current working directory
+-L <value> : Specify the depth of the -fR command (default = 3) => to use after -fR
+--change-key : Change the OpenAI API key
+```
