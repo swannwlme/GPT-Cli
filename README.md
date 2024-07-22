@@ -1,5 +1,7 @@
 # GPT-Cli
 
+![Demo image](image.png)
+
 **gpt_cli** is a useful yet powerful tool developped in Python that adds Chat-GPT and other OpenAI tools directly to your terminal !
 
  
