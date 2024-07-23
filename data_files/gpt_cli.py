@@ -6,6 +6,9 @@ import requests
 import json
 from pathlib import Path
 import platform
+from rich.console import Console
+from rich.markdown import Markdown
+
 
 version = "1.5"
 
@@ -48,7 +51,15 @@ voice = "onyx"
 give_current_files=False
 give_files = False
 max_depth = 3
+console = Console()
 
+def printCommand(command):
+    markdown = Markdown(f"```bash\n $ {command}\n```", style="green")
+    console.print(markdown)
+
+def printText(text):
+    markdown = Markdown(text)
+    console.print(markdown)
 
 def list_directory_structure(root_dir, max_depth, current_depth=0, prefix=""):
     if current_depth > max_depth:
@@ -83,21 +94,25 @@ def get_files(prompt):
 def get_gpt_response(prompt, model, useMessages=False):
     prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
     prompt = get_files(prompt)
+    print("Generating...")
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
     )
-    print(f"command : {response.choices[0].message.content}")
+    printCommand(response.choices[0].message.content)
+    # print(f"command : {response.choices[0].message.content}")
     return response.choices[0].message.content
 
 def gpt_no_code_response(prompt, model):
     prompt = get_files(prompt)
+    print("Generating...")
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
     )
+    
     print("\n")
-    print(response.choices[0].message.content)
+    printText(response.choices[0].message.content)
     print(" ")
 
 def generate_image(prompt, prev):
@@ -110,6 +125,7 @@ def generate_image(prompt, prev):
         quality="standard",
         n=1,
     )
+    
     if prev:
         webbrowser.open(response.data[0].url)
     else :
@@ -144,15 +160,19 @@ def get_help():
 
 def generate_audio(prompt, voice):
     prompt = get_files(prompt)
+    print("Generating audio...")
     response = client.audio.speech.create(
         model="tts-1",
         voice=voice,
         input=prompt,
     )
+    
+    print("Saving audio file...")
     filename = 'generated.mp3'
     while os.path.exists(filename):
         filename = filename.replace(".mp3", "_1.mp3")
     response.write_to_file(filename)
+    
     
     print(f"Audio saved as {filename}")
 
