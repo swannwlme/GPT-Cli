@@ -52,3 +52,8 @@ Then, execute the bash script
 ```bash
 ./install.sh
 ```
+
+
+</br>
+
+<p align="right">By swannwlme</p>
