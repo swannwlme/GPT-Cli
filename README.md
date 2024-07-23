@@ -1,6 +1,6 @@
 # <p align="center"> <img src="https://static.vecteezy.com/system/resources/previews/022/841/114/original/chatgpt-logo-transparent-background-free-png.png" width=23 height=23 /> GPT-Cli</p>
 
-![Demo image](image.png)
+![Demo image](readme_assets/image.png)
 
 **gpt_cli** is a useful yet powerful tool developped in Python that adds Chat-GPT and other OpenAI tools directly to your terminal !
 
@@ -53,6 +53,14 @@ Then, execute the bash script
 ./install.sh
 ```
 
+
+</br>
+
+## <p align="center">🧠 Examples</p>
+
+![Example Image](readme_assets/image2.png)
+ 
+![Example Image 2](readme_assets/image3.png)
 
 </br>
 
