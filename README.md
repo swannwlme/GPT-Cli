@@ -40,10 +40,10 @@ Arguments:
 
 ## <p align="center">⬇️ Install GPT-Cli</p>
 
-# Windows
+### Windows
 Simply launch the `install.bat` script
 
-# MacOS / Linux
+### MacOS / Linux
 Give yourself the permission to execute the install.sh script with this command :
 ```bash
 chmod +x install.sh
