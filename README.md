@@ -34,3 +34,21 @@ Arguments:
 -L <value> : Specify the depth of the -fR command (default = 3) => to use after -fR
 --change-key : Change the OpenAI API key
 ```
+
+
+</br>
+
+## <p align="center">⬇️ Install GPT-Cli</p>
+
+# Windows
+Simply launch the `install.bat` script
+
+# MacOS / Linux
+Give yourself the permission to execute the install.sh script with this command :
+```bash
+chmod +x install.sh
+```
+Then, execute the bash script
+```bash
+./install.sh
+```
