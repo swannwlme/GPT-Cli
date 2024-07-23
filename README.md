@@ -9,7 +9,7 @@
 ## <p align="center">🪛 Current tools</p>
 * **Command generator** : Simply explain in the terminal what you want to do and Chat-GPT will generate the command and execute it ! => No more code needed :)
 
-* **Ask GPT** : Just want to ask a question to Chat-GPT you can do it easily here and choose between GPT 3.5-turbo or GPT 4o
+* **Ask GPT** : Just want to ask a question to Chat-GPT you can do it easily here and choose between GPT 3.5-turbo, GPT 4o or GPT 4o-mini
 
 * **Generate Image** : You can quickly generate an image from your shell 
 
