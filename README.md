@@ -17,7 +17,6 @@
 
 To get every possible commands, simply use ```gptc -h```
 
-<span style="color: green">
 ```
 Usage: gptc [options] <prompt> => Generates command based on the prompt and executes it
 Arguments:
@@ -35,4 +34,3 @@ Arguments:
 -L <value> : Specify the depth of the -fR command (default = 3) => to use after -fR
 --change-key : Change the OpenAI API key
 ```
-</span>
