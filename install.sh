@@ -19,7 +19,7 @@ if ! [ -x "$(command -v pip)" ]; then
 fi
 
 #install the required python packages
-pip install -r requirements.txt
+pip install -r data_files/requirements.txt
 
 echo "Do you also want to be able to use gpt <prompt> with gptc <prompt> ? (y/n)"
 read answer
@@ -52,7 +52,7 @@ if [[ "$answer" == "y" || "$answer" == "Y" ]];then
 fi
 
 mkdir ~/gpt_cli
-cp gpt_cli.py ~/gpt_cli
+cp data_files/gpt_cli.py ~/gpt_cli
 
 echo " "
 echo "Installation complete have fun :)"

@@ -23,7 +23,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Install the required Python packages
-pip install -r requirements.txt
+pip install -r data_files/requirements.txt
 
 REM Prompt user to install gpt command
 set /p answer=Do you also want to be able to use gpt <prompt> with gptc <prompt> ? (y/n):
@@ -57,7 +57,7 @@ if /i "!answer!"=="y" (
 
 REM Create the gpt_cli directory and copy gpt_cli.py
 mkdir "%USERPROFILE%\gpt_cli"
-copy gpt_cli.py "%USERPROFILE%\gpt_cli"
+copy "data_files\gpt_cli.py" "%USERPROFILE%\gpt_cli"
 
 echo.
 echo Installation complete, have fun :)
