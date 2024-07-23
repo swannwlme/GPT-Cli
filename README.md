@@ -4,7 +4,7 @@
 
 **gpt_cli** is a useful yet powerful tool developped in Python that adds Chat-GPT and other OpenAI tools directly to your terminal !
 
-\
+</br>
  
 ## <p align="center"> Current tools </p>
 * **Command generator** : Simply explain in the terminal what you want to do and Chat-GPT will generate the command and execute it ! => No more code needed :)
