@@ -10,7 +10,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 
 
-version = "1.5"
+version = "2.3"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
 
