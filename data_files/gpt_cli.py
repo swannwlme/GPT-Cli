@@ -60,7 +60,7 @@ def printCommand(command):
     console.print(markdown)
 
 def printText(text):
-    markdown = Markdown(text)
+    markdown = Markdown(text, style="white")
     panel = Panel(markdown, title="Assistant", subtitle="Token : ", border_style="green", title_align="left", subtitle_align="right")
     console.print(panel)
 
@@ -180,9 +180,6 @@ def generate_audio(prompt, voice):
     print(f"Audio saved as {filename}")
 
 
-
-arguments = ["-h", "--help", "-nc", "--no-code", "--nocode", "-4o", "--4o", "-min", "--mini", "-no-code", "-img", "--image", "-i", "-prev", "--audio", "-a", "--voice", "-v", "--change-key", "-v", "--version", "-f", "-fR", "-L"]
-
 if len(sys.argv) < 2:
     print("Usage: gptc [options] <prompt>")
     print("Use -h or --help for more options\n")
@@ -193,77 +190,74 @@ if sys.argv[1] in ["-h", "--help"]:
     sys.exit(0)
 
 for arg in sys.argv[1:]:
-    if arg in arguments:
-        match arg:
-            case "-nc" | "--no-code" | "--nocode":
-                code = False
-                sys.argv.remove(arg)
+    match arg:
+        case "-nc" | "--no-code" | "--nocode":
+            code = False
+            sys.argv.remove(arg)
 
-            case "-4o" | "--4o":
-                model = "gpt-4.0"
-                sys.argv.remove(arg)
+        case "-4o" | "--4o":
+            model = "gpt-4.0"
+            sys.argv.remove(arg)
 
-            case "-min" | "--mini":
-                model = "gpt-4o-mini"
-                sys.argv.remove(arg)
+        case "-min" | "--mini":
+            model = "gpt-4o-mini"
+            sys.argv.remove(arg)
 
-            case "-img" | "--image" | "-i":
-                gpt4o = False
-                code = False
-                img = True
-                next_arg = sys.argv[sys.argv.index(arg) + 1]
-                if next_arg == "-prev":
-                    prev = True
-                    sys.argv.remove(next_arg)
-                sys.argv.remove(arg)
-                break
+        case "-img" | "--image" | "-i":
+            gpt4o = False
+            code = False
+            img = True
+            next_arg = sys.argv[sys.argv.index(arg) + 1]
+            if next_arg == "-prev":
+                prev = True
+                sys.argv.remove(next_arg)
+            sys.argv.remove(arg)
+            break
 
-            case "-audio" | "-a":
-                gpt4o = False
-                code = False
-                img = False
-                audio = True
-                next_arg = sys.argv[sys.argv.index(arg) + 1]
-                if next_arg in ["-v", "--voice"]:
-                    voice = sys.argv[sys.argv.index(arg) + 2]
-                    if voice in ["female", "f"]:
-                        voice = "nova"
-                    else:
-                        voice = "onyx"
-                    sys.argv.remove(next_arg)
-                    sys.argv.remove(voice)
-                sys.argv.remove(arg)
-                break
+        case "-audio" | "-a":
+            gpt4o = False
+            code = False
+            img = False
+            audio = True
+            next_arg = sys.argv[sys.argv.index(arg) + 1]
+            if next_arg in ["-v", "--voice"]:
+                voice = sys.argv[sys.argv.index(arg) + 2]
+                if voice in ["female", "f"]:
+                    voice = "nova"
+                else:
+                    voice = "onyx"
+                sys.argv.remove(next_arg)
+                sys.argv.remove(voice)
+            sys.argv.remove(arg)
+            break
 
-            case "--change-key":
-                print("Please enter your OpenAI api key: ")
-                api = input()
-                with open('gpt_cli.json', 'w') as f:
-                    json.dump({"api_key": api}, f)
-                sys.exit(0)
+        case "--change-key":
+            print("Please enter your OpenAI api key: ")
+            api = input()
+            with open('gpt_cli.json', 'w') as f:
+                json.dump({"api_key": api}, f)
+            sys.exit(0)
 
-            case "-v" | "--version":
-                print(f"\nCurrent gpt_cli version: {version}\n")
-                sys.exit(0)
+        case "-v" | "--version":
+            print(f"\nCurrent gpt_cli version: {version}\n")
+            sys.exit(0)
 
-            case "-f":
-                give_current_files = True
-                give_files = False
-                sys.argv.remove(arg)
+        case "-f":
+            give_current_files = True
+            give_files = False
+            sys.argv.remove(arg)
 
-            case "-fR":
-                give_files = True
-                sys.argv.remove(arg)
+        case "-fR":
+            give_files = True
+            sys.argv.remove(arg)
 
-            case "-L":
-                max_depth = int(sys.argv[sys.argv.index(arg) + 1])
-                sys.argv.remove(arg)
-                sys.argv.remove(str(max_depth))
+        case "-L":
+            max_depth = int(sys.argv[sys.argv.index(arg) + 1])
+            sys.argv.remove(arg)
+            sys.argv.remove(str(max_depth))
 
-            case _:
-                sys.argv.remove(arg)
-    else:
-        break
+        case _:
+            sys.argv.remove(arg)
 
 if img:
     prompt = " ".join(sys.argv[1:])
