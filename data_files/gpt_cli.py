@@ -55,6 +55,7 @@ give_files = False
 max_depth = 3
 console = Console()
 no_frame = False
+force=False
 
 def getNbToken(text):
     encoding = tiktoken.encoding_for_model(model)
@@ -164,13 +165,14 @@ def get_help():
     print("-v, --version : Get current version of gpt_cli")
     print("-nc, --no-code, --nocode : Generate a response without code")
     print("-nf, --no-frame : Removes the frame around the assistant response")
+    print("-f, --force : Executes the command without asking for confirmation")
     print("-4o, --4o : Use GPT-4.0 model")
     print("-min, --mini : Use GPT-4-mini model")
     print("-img, --image, -i : Generate an image based on the prompt")
     print("-prev : Display a preview of the image => needs to be used after -img or --image")
     print("-a, --audio : Generate audio based on the prompt")
     print("-v, --voice : Specify the voice for the audio (f or m) => needs to be used after -a or --audio")
-    print("-f : Specify to Chat-GPT the files and folders in your current working directory")
+    print("-fc : Specify to Chat-GPT the files and folders in your current working directory")
     print("-fR : Specify to Chat-GPT the files and folders and sub-files/folders from your current working directory")
     print("-L <value> : Specify the depth of the -fR command (default = 3) => to use after -fR")
     print("--change-key : Change the OpenAI API key")
@@ -257,7 +259,7 @@ for arg in sys.argv[1:]:
             print(f"\nCurrent gpt_cli version: {version}\n")
             sys.exit(0)
 
-        case "-f":
+        case "-fc":
             give_current_files = True
             give_files = False
             sys.argv.remove(arg)
@@ -275,6 +277,10 @@ for arg in sys.argv[1:]:
             no_frame=True
             sys.argv.remove(arg)
 
+        case "-f" | "--force":
+            force=True
+            sys.argv.remove(arg)
+
         case _:
             if arg.startswith("-"):
                 print(f"Unknown option: {arg}")
@@ -288,7 +294,15 @@ elif audio:
     generate_audio(prompt, voice)
 elif code:
     prompt = " ".join(sys.argv[1:])
-    os.system(get_gpt_response(prompt, model))
+    command = get_gpt_response(prompt, model)
+    if not force:
+        print(" ")
+        confirm = input("Press Enter to execute or write n to stop : ")
+        if len(confirm) == 0:
+            os.system(command)
+            print("\nCommand executed")
+    else:
+        os.system(command)
 else:
     prompt = " ".join(sys.argv[1:])
     gpt_no_code_response(prompt, model)
