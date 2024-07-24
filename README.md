@@ -58,7 +58,7 @@ Then, execute the bash script
 
 ## <p align="center">🧠 Examples</p>
 
-![Example Image](readme_assets/image2.png)
+![Example Image](readme_assets/image_exemple2.png)
  
 ![Example Image 2](readme_assets/image3.png)
 
