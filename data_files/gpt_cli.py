@@ -66,6 +66,10 @@ def printCommand(prompt, commands):
     toPrintCommands="\n Commands :\n"
 
     for command in commands:
+        if command.startswith("```bash"):
+            command.replace("```bash", "")
+        if command.endswith("```"):
+            command.replace("```", "")
         toPrintCommands+=f"\n```bash\n $ {command}\n```"
 
     markdown = Markdown(toPrintCommands, style="white")
