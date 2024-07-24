@@ -67,7 +67,7 @@ def printCommand(command):
 def printText(prompt, text):
     markdown = Markdown(text, style="white")
     token = f"Token: {getNbToken(text)+getNbToken(prompt)}"
-    panel = Panel(markdown, title="Assistant", subtitle=token, border_style="green", title_align="left", subtitle_align="right")
+    panel = Panel(markdown, title="Assistant", subtitle=token, border_style="blue", title_align="left", subtitle_align="right")
     if no_frame :
         console.print(markdown)
     else:
