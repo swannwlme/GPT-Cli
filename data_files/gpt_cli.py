@@ -12,7 +12,7 @@ from rich.panel import Panel
 import tiktoken
 
 
-version = "2.5.2"
+version = "2.5.3"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
 
@@ -61,8 +61,15 @@ def getNbToken(text):
     encoding = tiktoken.encoding_for_model(model)
     return len(encoding.encode(text))
 
-def printCommand(prompt, command):
-    markdown = Markdown(f"\n Command :\n\n```bash\n $ {command}\n```", style="white")
+def printCommand(prompt, commands):
+    #markdown = Markdown(f"\n Command :\n\n```bash\n $ {command}\n```", style="white")
+    toPrintCommands="\n Commands :\n"
+
+    for command in commands:
+        toPrintCommands+=f"\n```bash\n $ {command}\n```"
+
+    markdown = Markdown(toPrintCommands, style="white")
+
     token = f"Token: {getNbToken(command)+getNbToken(prompt)}"
     panel = Panel(markdown, title="Assistant", subtitle=token, border_style="blue", title_align="left", subtitle_align="right")
     if no_frame :
@@ -110,16 +117,18 @@ def get_files(prompt):
     return prompt
 
 def get_gpt_response(prompt, model, useMessages=False):
-    prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return a CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMAND. If possible, return a one-line command or chain many commands together. Return ONLY the command ready to run in the terminal. The command should do the following : {prompt}"
+    prompt = f"You are a Command Line Interface expert and your task is to provide functioning shell commands on os : {os_name}. Return on or multiple CLI command and nothing else - do not send it in a code block, quotes, or anything else, just the pure text CONTAINING ONLY THE COMMANDS. If possible, return a one-line command or chain many commands together by separating them with the text '//-separator//'. Return ONLY the command or commands ready to run in the terminal. The command should do the following : {prompt}"
     prompt = get_files(prompt)
     print("Generating...")
     response = client.chat.completions.create(
         model=model, 
         messages=[{"role": "system", "content": prompt}]
     )
-    printCommand(prompt, response.choices[0].message.content)
-    # print(f"command : {response.choices[0].message.content}")
-    return response.choices[0].message.content
+
+    finalCommands = response.choices[0].message.content.split("//-separator//")
+
+    printCommand(prompt, finalCommands)
+    return finalCommands
 
 def gpt_no_code_response(prompt, model):
     prompt = get_files(prompt)
@@ -299,10 +308,12 @@ elif code:
         print(" ")
         confirm = input("Press Enter to execute or write n to stop : ")
         if len(confirm) == 0:
-            os.system(command)
-            print("\nCommand executed")
+            for c in command:
+                os.system(c)
+            print("\nCommands executed")
     else:
-        os.system(command)
+        for c in command:
+            os.system(c)
 else:
     prompt = " ".join(sys.argv[1:])
     gpt_no_code_response(prompt, model)
