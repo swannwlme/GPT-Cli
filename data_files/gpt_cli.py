@@ -12,7 +12,7 @@ from rich.panel import Panel
 import tiktoken
 
 
-version = "2.5.1"
+version = "2.5.2"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
 
