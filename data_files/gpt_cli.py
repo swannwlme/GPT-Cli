@@ -60,9 +60,14 @@ def getNbToken(text):
     encoding = tiktoken.encoding_for_model(model)
     return len(encoding.encode(text))
 
-def printCommand(command):
-    markdown = Markdown(f"```bash\n $ {command}\n```")
-    console.print(markdown)
+def printCommand(prompt, command):
+    markdown = Markdown(f" Command :\n\n```bash\n $ {command}\n```")
+    token = f"Token: {getNbToken(command)+getNbToken(prompt)}"
+    panel = Panel(markdown, title="Assistant", subtitle=token, border_style="blue", title_align="left", subtitle_align="right")
+    if no_frame :
+        console.print(markdown)
+    else:
+        console.print(panel)
 
 def printText(prompt, text):
     markdown = Markdown(text, style="white")
@@ -111,7 +116,7 @@ def get_gpt_response(prompt, model, useMessages=False):
         model=model, 
         messages=[{"role": "system", "content": prompt}]
     )
-    printCommand(response.choices[0].message.content)
+    printCommand(prompt, response.choices[0].message.content)
     # print(f"command : {response.choices[0].message.content}")
     return response.choices[0].message.content
 
