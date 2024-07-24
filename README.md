@@ -23,6 +23,7 @@ Arguments:
 -h, --help : Display this help message
 -v, --version : Get current version of gpt_cli
 -nc, --no-code, --nocode : Generate a response without code
+-nf, --no-frame : Removes the frame around the assistant response
 -4o, --4o : Use GPT-4.0 model
 -min, --mini : Use GPT-4-mini model
 -img, --image, -i : Generate an image based on the prompt
