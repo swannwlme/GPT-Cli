@@ -9,10 +9,10 @@ import platform
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
-from rich.syntax import Syntax
+import tiktoken
 
 
-version = "2.3"
+version = "2.4"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
 
@@ -55,13 +55,18 @@ give_files = False
 max_depth = 3
 console = Console()
 
+def getNbToken(text):
+    encoding = tiktoken.encoding_for_model(model)
+    return len(encoding.encode(text))
+
 def printCommand(command):
     markdown = Markdown(f"```bash\n $ {command}\n```")
     console.print(markdown)
 
-def printText(text):
+def printText(prompt, text):
     markdown = Markdown(text, style="white")
-    panel = Panel(markdown, title="Assistant", subtitle="Token : ", border_style="green", title_align="left", subtitle_align="right")
+    token = f"Token: {getNbToken(text)+getNbToken(prompt)}"
+    panel = Panel(markdown, title="Assistant", subtitle=token, border_style="green", title_align="left", subtitle_align="right")
     console.print(panel)
 
 def list_directory_structure(root_dir, max_depth, current_depth=0, prefix=""):
@@ -115,7 +120,7 @@ def gpt_no_code_response(prompt, model):
     )
     
     print("\n")
-    printText(response.choices[0].message.content)
+    printText(prompt, response.choices[0].message.content)
     print(" ")
 
 def generate_image(prompt, prev):
@@ -257,7 +262,9 @@ for arg in sys.argv[1:]:
             sys.argv.remove(str(max_depth))
 
         case _:
-            sys.argv.remove(arg)
+            if arg.startswith("-"):
+                print(f"Unknown option: {arg}")
+                sys.exit(1)
 
 if img:
     prompt = " ".join(sys.argv[1:])
