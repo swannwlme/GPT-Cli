@@ -8,6 +8,8 @@ from pathlib import Path
 import platform
 from rich.console import Console
 from rich.markdown import Markdown
+from rich.panel import Panel
+from rich.syntax import Syntax
 
 
 version = "2.3"
@@ -54,12 +56,13 @@ max_depth = 3
 console = Console()
 
 def printCommand(command):
-    markdown = Markdown(f"```bash\n $ {command}\n```", style="green")
+    markdown = Markdown(f"```bash\n $ {command}\n```")
     console.print(markdown)
 
 def printText(text):
     markdown = Markdown(text)
-    console.print(markdown)
+    panel = Panel(markdown, title="Assistant", subtitle="Token : ", border_style="green", title_align="left", subtitle_align="right")
+    console.print(panel)
 
 def list_directory_structure(root_dir, max_depth, current_depth=0, prefix=""):
     if current_depth > max_depth:
