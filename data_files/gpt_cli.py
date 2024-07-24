@@ -12,7 +12,7 @@ from rich.panel import Panel
 import tiktoken
 
 
-version = "2.5"
+version = "2.5.1"
 
 config_file = f"{str(Path.home())}/gpt_cli/gpt_cli.json"
 
@@ -61,7 +61,7 @@ def getNbToken(text):
     return len(encoding.encode(text))
 
 def printCommand(prompt, command):
-    markdown = Markdown(f" Command :\n\n```bash\n $ {command}\n```")
+    markdown = Markdown(f"\n Command :\n\n```bash\n $ {command}\n```", style="white")
     token = f"Token: {getNbToken(command)+getNbToken(prompt)}"
     panel = Panel(markdown, title="Assistant", subtitle=token, border_style="blue", title_align="left", subtitle_align="right")
     if no_frame :
