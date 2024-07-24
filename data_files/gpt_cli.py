@@ -226,7 +226,7 @@ for arg in sys.argv[1:]:
             sys.argv.remove(arg)
 
         case "-4o" | "--4o":
-            model = "gpt-4.0"
+            model = "gpt-4"
             sys.argv.remove(arg)
 
         case "-min" | "--mini":
