@@ -54,6 +54,7 @@ give_current_files=False
 give_files = False
 max_depth = 3
 console = Console()
+no_frame = False
 
 def getNbToken(text):
     encoding = tiktoken.encoding_for_model(model)
@@ -67,7 +68,10 @@ def printText(prompt, text):
     markdown = Markdown(text, style="white")
     token = f"Token: {getNbToken(text)+getNbToken(prompt)}"
     panel = Panel(markdown, title="Assistant", subtitle=token, border_style="green", title_align="left", subtitle_align="right")
-    console.print(panel)
+    if no_frame :
+        console.print(markdown)
+    else:
+        console.print(panel)
 
 def list_directory_structure(root_dir, max_depth, current_depth=0, prefix=""):
     if current_depth > max_depth:
@@ -154,6 +158,7 @@ def get_help():
     print("-h, --help : Display this help message")
     print("-v, --version : Get current version of gpt_cli")
     print("-nc, --no-code, --nocode : Generate a response without code")
+    print("-nf, --no-frame : Removes the frame around the assistant response")
     print("-4o, --4o : Use GPT-4.0 model")
     print("-min, --mini : Use GPT-4-mini model")
     print("-img, --image, -i : Generate an image based on the prompt")
@@ -260,6 +265,10 @@ for arg in sys.argv[1:]:
             max_depth = int(sys.argv[sys.argv.index(arg) + 1])
             sys.argv.remove(arg)
             sys.argv.remove(str(max_depth))
+
+        case "-nf" | "--no-frame":
+            no_frame=True
+            sys.argv.remove(arg)
 
         case _:
             if arg.startswith("-"):
